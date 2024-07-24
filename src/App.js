@@ -1,10 +1,29 @@
 import React from 'react';
-import './App.css';
+import { useState } from 'react';
+import './styles/App.css';
+import PostItem from './components/PostItem';
+//import Counter from './components/Counter';
+//import ClassCounter from './components/ClassCounter';
 
 function App() {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'JavaScript', body: 'Description'},
+    {id: 2, title: 'JavaScript 2', body: 'Description'},
+    {id: 3, title: 'JavaScript 3', body: 'Description'}
+  ])
+
+
   return (
     <div className="App">
-
+      {/* <Counter /> */}
+      {/* <ClassCounter /> */}
+      {/* //передаем в props объект post  */}
+      {/* <PostItem post={{id: 1, title: 'JavaScript', body: 'Description'}}/> */}
+      //инлайн стили
+      <h1 style={{textAlign: 'center'}}>Список постов</h1>
+      {posts.map(post => 
+        <PostItem post={post} key={post.id}/>
+      )}
     </div>
   );
 }
