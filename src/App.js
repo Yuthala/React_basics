@@ -4,6 +4,7 @@ import './styles/App.css';
 //import PostItem from './components/PostItem';
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
+import MyInput from './components/UI/input/MyInput';
 //import Counter from './components/Counter';
 //import ClassCounter from './components/ClassCounter';
 
@@ -30,8 +31,8 @@ function App() {
 
     {/* //форма добавления поста */}
     <form>
-      <input type="text" placeholder='название поста' />
-      <input type="text" placeholder='описание поста' />
+      <MyInput type="text" placeholder='название поста' />
+      <MyInput type="text" placeholder='описание поста' />
       <MyButton>Создать пост</MyButton>
     </form>
     <PostList posts={posts} title="Список постов 1"/>
