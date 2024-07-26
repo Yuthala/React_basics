@@ -4,15 +4,18 @@ import './styles/App.css';
 //import PostItem from './components/PostItem';
 import PostList from './components/PostList';
 import PostForm from './components/UI/PostForm';
+import MySelect from './components/UI/select/MySelect';
 //import Counter from './components/Counter';
 //import ClassCounter from './components/ClassCounter';
 
 function App() {
   const [posts, setPosts] = useState([
 		{id: 1, title: 'JavaScript', body: 'Description'},
-		{id: 2, title: 'JavaScript 2', body: 'Description'},
-		{id: 3, title: 'JavaScript 3', body: 'Description'}
+		{id: 2, title: 'Bdsfgg', body: 'ghjsdgfs'},
+		{id: 3, title: 'Htyastuays', body: 'zifsjhekcjs'}
 		])
+    //состояние select
+  const [selectedSort, setSelectedSort] = useState('');
 
     //функция ожидат на вход новый созданный пост. через изменение состояния получаем список существующих постов ...posts + новый пост
   const createPost = (newPost) => {
@@ -24,6 +27,16 @@ function App() {
     //удаляем post, переданный в аргументы. С помощью filter получаем новый массив без этого поста
     setPosts(posts.filter(p => p.id !== post.id))
   }
+  //функция сортировки массива. Sort - это выбранный механизм сортировки: по названию полей title или body
+  const sortPosts = (sort) => {
+    //перезаписываем состояние select-а
+    setSelectedSort(sort);
+    //передаем в setPosts отсортированный массив иммутабельно (копию массива)
+    //функция sort принимает колбэк, который аргументами принимает 2 аргумента массива - a и b
+    //для сравнения строк используем функцию localeCompare. Сравниваем поле из объекта a с полем из объекта b
+    //на основании этого сравнения сортируется массив
+    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
+  }
 
   return (
     <div className="App">
@@ -33,8 +46,30 @@ function App() {
       {/* <PostItem post={{id: 1, title: 'JavaScript', body: 'Description'}}/> */}
 
     <PostForm create={createPost}/>
-    {/* //передаем функцию remove={removePost} как props в дочерний компонент PostList.  */}
-    <PostList remove={removePost} posts={posts} title="Список постов 1"/>
+
+    {/* //сортировка постов */}
+    <hr style={{margin: '15px 0'}}/>
+    <div>
+      {/* //передаем значения options в компонент MySelect через props */}
+      <MySelect 
+        value={selectedSort}
+        onChange={sortPosts}
+        defaultValue="Сортировка"
+        // Массив опций
+        options={[
+          {value: 'title', name: 'По названию'},          
+          {value: 'body', name: 'По описанию'},          
+
+        ]}
+      />
+    </div>
+
+    {/* //условный рендер. Проверяем, что длина массива posts не равна 0, т.е. какие-то посты есть. И если равна 0, выводим пользователю "Посты не найдены"
+    //передаем функцию remove={removePost} как props в дочерний компонент PostList. */}
+    {posts.length
+      ? <PostList remove={removePost} posts={posts} title="Посты по JS" />
+      : <h3 style={{textAlign: 'center'}}>Посты не найдены</h3>
+    }
     </div>
   );
 }
