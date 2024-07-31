@@ -1,10 +1,12 @@
 import React from 'react';
-import { useState, useRef } from 'react';
+import { useState} from 'react';
+// import { useRef} from 'react';
 import './styles/App.css';
 //import PostItem from './components/PostItem';
 import PostList from './components/PostList';
 import PostForm from './components/UI/PostForm';
 import MySelect from './components/UI/select/MySelect';
+import MyInput from './components/UI/input/MyInput';
 //import Counter from './components/Counter';
 //import ClassCounter from './components/ClassCounter';
 
@@ -16,6 +18,17 @@ function App() {
 		])
     //состояние select
   const [selectedSort, setSelectedSort] = useState('');
+
+  //состояние инпута Поиск
+  const [searchQuery, setSearchQuery] = useState('');
+
+  function getSortedPosts() {
+    if(selectedSort) {
+      return [...posts].sort((a, b) => a[setSelectedSort].localeCompare(b[selectedSort]))
+    } return posts;
+  }
+
+  const sortedPosts = getSortedPosts();
 
     //функция ожидат на вход новый созданный пост. через изменение состояния получаем список существующих постов ...posts + новый пост
   const createPost = (newPost) => {
@@ -35,7 +48,7 @@ function App() {
     //функция sort принимает колбэк, который аргументами принимает 2 аргумента массива - a и b
     //для сравнения строк используем функцию localeCompare. Сравниваем поле из объекта a с полем из объекта b
     //на основании этого сравнения сортируется массив
-    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
+    // setPosts()
   }
 
   return (
@@ -50,6 +63,12 @@ function App() {
     {/* //сортировка постов */}
     <hr style={{margin: '15px 0'}}/>
     <div>
+      {/* //поиск */}
+      <MyInput
+        placeholder="Поиск"
+        value={searchQuery}
+        onChange={e => setSearchQuery(e.target.value)}
+      />
       {/* //передаем значения options в компонент MySelect через props */}
       <MySelect 
         value={selectedSort}
@@ -67,7 +86,7 @@ function App() {
     {/* //условный рендер. Проверяем, что длина массива posts не равна 0, т.е. какие-то посты есть. И если равна 0, выводим пользователю "Посты не найдены"
     //передаем функцию remove={removePost} как props в дочерний компонент PostList. */}
     {posts.length
-      ? <PostList remove={removePost} posts={posts} title="Посты по JS" />
+      ? <PostList remove={removePost} posts={sortedPosts} title="Посты по JS" />
       : <h3 style={{textAlign: 'center'}}>Посты не найдены</h3>
     }
     </div>
