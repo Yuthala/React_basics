@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState} from 'react';
 // import { useRef} from 'react';
+import { useMemo } from 'react';
 import './styles/App.css';
 //import PostItem from './components/PostItem';
 import PostList from './components/PostList';
@@ -22,13 +23,11 @@ function App() {
   //состояние инпута Поиск
   const [searchQuery, setSearchQuery] = useState('');
 
-  function getSortedPosts() {
+  const sortedPosts = useMemo(() => {
     if(selectedSort) {
       return [...posts].sort((a, b) => a[setSelectedSort].localeCompare(b[selectedSort]))
     } return posts;
-  }
-
-  const sortedPosts = getSortedPosts();
+  }, [selectedSort, posts])
 
     //функция ожидат на вход новый созданный пост. через изменение состояния получаем список существующих постов ...posts + новый пост
   const createPost = (newPost) => {
