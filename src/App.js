@@ -23,11 +23,18 @@ function App() {
   //состояние инпута Поиск
   const [searchQuery, setSearchQuery] = useState('');
 
+  //массив сортированных постов
   const sortedPosts = useMemo(() => {
     if(selectedSort) {
       return [...posts].sort((a, b) => a[setSelectedSort].localeCompare(b[selectedSort]))
     } return posts;
   }, [selectedSort, posts])
+
+
+  //реализуем поиск на основании отсортированного массива. В массиве зависимостей поисковая строка и отсротированный массив постов. Отфильтровываем отсортированный массив по значениям post.title, которые содержат поисковый запрос 
+const sortedAndSearchedPosts = useMemo(() => {
+  return sortedPosts.filter(post => post.title.toLowerCase().includes(searchQuery))
+}, [searchQuery, sortedPosts])
 
     //функция ожидат на вход новый созданный пост. через изменение состояния получаем список существующих постов ...posts + новый пост
   const createPost = (newPost) => {
@@ -84,8 +91,8 @@ function App() {
 
     {/* //условный рендер. Проверяем, что длина массива posts не равна 0, т.е. какие-то посты есть. И если равна 0, выводим пользователю "Посты не найдены"
     //передаем функцию remove={removePost} как props в дочерний компонент PostList. */}
-    {posts.length
-      ? <PostList remove={removePost} posts={sortedPosts} title="Посты по JS" />
+    {sortedAndSearchedPosts.length
+      ? <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Посты по JS" />
       : <h3 style={{textAlign: 'center'}}>Посты не найдены</h3>
     }
     </div>
