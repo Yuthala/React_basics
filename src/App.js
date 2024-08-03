@@ -8,6 +8,7 @@ import PostList from './components/PostList';
 import PostForm from './components/UI/PostForm';
 import MySelect from './components/UI/select/MySelect';
 import MyInput from './components/UI/input/MyInput';
+import MyModal from './components/UI/MyModal/MyModal';
 //import Counter from './components/Counter';
 //import ClassCounter from './components/ClassCounter';
 
@@ -63,6 +64,8 @@ const sortedAndSearchedPosts = useMemo(() => {
       {/* <ClassCounter /> //ClassCounter.jsx */}
       {/* //передаем в props объект post  */}
       {/* <PostItem post={{id: 1, title: 'JavaScript', body: 'Description'}}/> */}
+
+    <MyModal>cskjlkJCKLc</MyModal>
 
     <PostForm create={createPost}/>
 
